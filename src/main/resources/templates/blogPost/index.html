@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+  <head>
+    <th:block th:replace="/fragments/template.html :: head-setup"></th:block>
+    <title>Tech Talent Blog</title>
+  </head>
+
+  <body>
+    <th:block th:replace="fragments/template.html :: navbar"></th:block>
+    <div class="container">
+      <h1>Welcome to my blog</h1>
+
+      <!-- th:each is an enhanced for loop. The variable on the left of the colon
+            is a stand-in for the 'current' object being rendered while the variable
+        in the ${} is an iterable (e.g. a list)  -->
+      <div class="row" th:each="post : ${blogPosts}">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${post.getTitle()}"></h5>
+              <div class="card-text">
+                <p>By: <span th:text="${post.getAuthor()}"></span></p>
+                <p th:text="${post.getBlogEntry()}"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:replace="/fragments/template.html :: end-setup"></th:block>
+  </body>
+</html>

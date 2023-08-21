@@ -1,0 +1,63 @@
+ <!-- Inside of template.html we are going to be creating
+'fragments' -> 'blocks' of HTML that we intend to reuse over and over
+throughout our other Thymeleaf Templates. This can be something like
+an Link tag connecting to a stylesheet / bootstrap
+
+But we can also use it to link in repeated blocks of HTML such as 
+Navbars, Footers, etc.
+Of course, this is a useful tool when we want to keep our code DRY
+-->
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+  <head>
+    <!-- To create a fragment in Thymeleaf, we can use a th:block combined with the th:fragment attribute
+        This essentially says to Thymeleaf, 'Hey, this is a block of HTML that the developer has given a name'
+        and we can replicate / copy/paste that block whenever they access the attribute name elsewhere
+    -->
+    <th:block th:fragment="head-setup">
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+        crossorigin="anonymous"
+      />
+      <link th:href="@{/style.css}" rel="stylesheet" />
+    </th:block>
+  </head>
+  <body>
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">TechTalentBlog</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" th:href="@{/new}">Create a new Blog Post</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <th:block th:fragment="end-setup">
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"
+      ></script>
+    </th:block>
+  </body>
+</html>

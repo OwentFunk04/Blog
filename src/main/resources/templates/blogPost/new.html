@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+  <head>
+    <th:block th:replace="/fragments/template.html :: head-setup"></th:block>
+    <title>Create new BlogPost</title>
+  </head>
+  <body>
+    <th:block th:replace="fragments/template.html :: navbar"></th:block>
+    <div class="container">
+      <h1>Add new blogpost</h1>
+      <!-- This form is going to use some SpringBoot / Thymeleaf Magic
+             We are going to use Thymeleaf Attributes to tie this
+             form to an object and send that object as a requestBody
+            to a url as a post request when the user submits the form
+        
+
+            Want all individual fields of the form map to an object that
+            we specify with th:object
+
+            Upon 'submitting the form', we will send a POST request to
+            /blogposts with a response body of an object called blogPost
+        -->
+      <form th:action="@{/blogposts}" th:object="${blogPost}" method="post">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            th:field="*{title}"
+            placeholder="Blog Title..."
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            th:field="*{author}"
+            class="form-control"
+            placeholder="Blog Author..."
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            th:field="*{blogEntry}"
+            placeholder="Blog Entry..."
+          />
+        </div>
+        <button class="btn btn-primary" type="submit">Submit your blog</button>
+      </form>
+
+
+      <th:block th:replace="/fragments/template.html :: end-setup"></th:block>
+
+    </div>
+  </body>
+</html>
