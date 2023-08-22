@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:replace="~{/fragments/template.html :: head-setup}"></th:block>
+    <title>Deleted Blog Post</title>
+</head>
+<body>
+    <th:block th:replace="~{/fragments/template.html :: navbar}"></th:block>
+    <div class="container">
+        <h1>Deleted the following Blog Post Successfully:</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${deletedBlogPost.getTitle()}"></h5>
+                        <div class="card-text">
+                            <p>By: <span th:text="${deletedBlogPost.getAuthor()}"></span></p>
+                            <p th:text="${deletedBlogPost.getBlogEntry()}"></p>
+                        </div>
+                        <a th:href="@{/}" class="btn btn-success">Back to Home Page</a>
+                        <a th:href="@{/new}" class="btn btn-primary">Create A New Post</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:replace="~{/fragments/template.html :: end-setup}"></th:block>
+</body>
+</html>

@@ -15,7 +15,7 @@ import com.tts.techtalentblog.models.BlogPost;
 public interface BlogPostRepository extends CrudRepository<BlogPost, Long>{
 
 	@Override
-	Optional<BlogPost> findById(Long id);
+	Optional<BlogPost> findById(Long id); 
 	
 	@Override
 	List<BlogPost> findAll();

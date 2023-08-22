@@ -1,18 +1,20 @@
 package com.tts.techtalentblog.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.tts.techtalentblog.models.BlogPost;
 import com.tts.techtalentblog.repositories.BlogPostRepository;
 
-import jakarta.validation.Valid;
 
 // We don't give this a @RestController annotation because we
 // actually want this particular controller to return links to HTML
@@ -72,5 +74,83 @@ public class BlogPostController {
 
 		return "blogPost/result.html";
 	}
+	
+	
+	// The {} with a variable inside of it in web dev is sometimes referred to as a 'slug'
+	// a 'standin' for a variable. Using slugs gives you access to more dynamic pathing in your
+	// projects and they keep your projects DRY since you don't have to create HTML documents
+	// for individual DB Rows
+	// localhost:8080/blogposts/1, /blogposts/2, etc.
+	@GetMapping("/blogposts/{id}")
+	public String editPostWithId(@PathVariable Long id, Model model) {
+		
+		Optional<BlogPost> blogPost = blogPostRepository.findById(id);
+
+		// isPresent is a method provided by the Optional class that
+		// ensures that there is in fact a non-null object inside of it
+		// Essentially, we are checking whether or not the Database could find
+		// a BlogPost with the id we're looking for
+		if(blogPost.isPresent()) {
+			// the Optional .get() method essentially just removes the 'Optional' around
+			// an object's typing. Optional<BlogPost> -> *use .get()* -> BlogPost
+			BlogPost blogPostById = blogPost.get();
+			model.addAttribute("blogPost", blogPostById);
+		} 
+		  
+		return "blogPost/edit.html";
+	}
+	
+	// This is listening in for 'PATCH' requests from our frontend / thymeleaf form
+	@PatchMapping("/blogposts/{id}")
+	public String updateExistingPost(@PathVariable Long id, BlogPost blogPost, Model model) {
+		
+		Optional<BlogPost> blogPostById = blogPostRepository.findById(id);
+		
+		if(blogPostById.isPresent()) {
+			// Query the database for the row pertaining to the ID
+			// we are trying to edit
+			BlogPost dbBlogPost = blogPostById.get();
+			// Modify all of its fields so that it is up to date
+			// with our recently filled out form / the input BlogPost variable we got
+			
+			System.out.println(dbBlogPost);
+			
+			dbBlogPost.setTitle(blogPost.getTitle());
+			dbBlogPost.setAuthor(blogPost.getAuthor());
+			dbBlogPost.setBlogEntry(blogPost.getBlogEntry());
+			
+			System.out.println(dbBlogPost);
+
+			// Save the updated dbBlogPost to our database (right now it's just
+			// an object)
+			// We can use .save() here because it will automatically look / update
+			// by ID which is present inside of dbBlogPost
+			blogPostRepository.save(dbBlogPost);
+			
+			model.addAttribute("newBlogPost", dbBlogPost);
+		}
+		System.out.println(id);
+		System.out.println(blogPost); 
+		
+		return "blogPost/result.html";
+	} 
+	
+	
+	// Responds to DELETE Requests from our frontend
+	@DeleteMapping(path="/blogposts/{id}")
+	public String deletePostById(@PathVariable Long id, Model model) {
+		  
+		Optional<BlogPost> blogPostById = blogPostRepository.findById(id);
+		
+		if(blogPostById.isPresent()) {
+			BlogPost blogPost = blogPostById.get();
+			model.addAttribute("deletedBlogPost", blogPost);
+			blogPostRepository.deleteById(id);		 	
+		}
+		
+		return "blogPost/delete.html";
+	}
+	
+	
 
 }

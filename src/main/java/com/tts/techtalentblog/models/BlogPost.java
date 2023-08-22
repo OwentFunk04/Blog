@@ -44,13 +44,17 @@ public class BlogPost {
 		this.author = author;
 		this.blogEntry = blogEntry;
 	}
+	
+	public Long getId() {
+		return id;
+	}
 
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = title;    
 	}
 
 	public String getAuthor() {

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:replace="~{/fragments/template.html :: head-setup}"></th:block>
+    <title>Edit a BlogPost</title>
+</head>
+<body>
+    <th:block th:replace="~{/fragments/template.html :: navbar}"></th:block>
+    <div class="container">
+        <h1>Editing Blog Post:</h1>
+
+        <!-- 
+            Post isn't necessarily the best possible option for this type of method
+            Ideally, we would like to use PATCH (or PUT), but when it comes to specifying non-get/post
+            methods in Thymeleaf, it actually requires a bit more work than it may be worth for this case
+        -->
+        <form th:action="@{/blogposts/{id} (id=${blogPost.getId()})}" th:object="${blogPost}" th:method="patch">
+            <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{title}"
+                  placeholder="Blog Title..."
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  th:field="*{author}"
+                  class="form-control"
+                  placeholder="Blog Author..."
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{blogEntry}"
+                  placeholder="Blog Entry..."
+                />
+              </div>
+              <button class="btn btn-primary" type="submit">Submit your blog</button>
+        </form>
+    </div>
+
+    <!-- End-setup is the JS that comes with bootstrap -->
+    <th:block th:replace="~{/fragments/template.html :: end-setup}"></th:block>
+</body>
+</html>
